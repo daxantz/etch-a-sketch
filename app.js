@@ -5,6 +5,7 @@ const colorMode = document.querySelector("#color");
 const rainbowMode = document.querySelector("#rainbow");
 const eraser = document.querySelector("#erase");
 const clear = document.querySelector("#clear");
+let isMouseDown = false;
 
 
 const createCells = (cells) => {
@@ -16,21 +17,57 @@ const createCells = (cells) => {
         const cell = document.createElement("div");
         cell.classList.add("cell");
         container.appendChild(cell);
+
         rainbowMode.addEventListener("click", () => {
-            cell.addEventListener("mouseover", () => {
-                cell.style.backgroundColor = randomizeColors();
+            cell.addEventListener("mousemove",(e) => { //activates the event listener when the mouse is moved
+                if (isMouseDown) {
+                    if (e.buttons === 1) { // Check if left mouse button is held down
+                        cell.style.backgroundColor = randomizeColors();
+                    }
+                }
             });
         })
+
         colorMode.addEventListener("click", () =>{
-            cell.addEventListener("mouseover", () => {
-                cell.style.backgroundColor = selectColor();
+            cell.addEventListener("mousemove", (e) => {
+                if (isMouseDown) {
+                    if (e.buttons === 1) { // Check if left mouse button is held down
+                        cell.style.backgroundColor = selectColor();
+                    }
+                }
+                
+                
             });
         })
+
         eraser.addEventListener("click", () => {
-            cell.addEventListener("mouseover", () => {
-                cell.style.backgroundColor = "white";
+            cell.addEventListener("mousemove", (e) => {
+                if (isMouseDown) {
+                    if (e.buttons === 1) { // Check if left mouse button is held down
+                        cell.style.backgroundColor = "white";
+                    }
+                }
+                
             });
         })  
+
+        document.addEventListener("mousedown", (e) => {
+            // Check if the left mouse button is pressed (button code: 0)
+            if (e.button === 0) {
+                isMouseDown = true;
+            }
+        });
+
+        document.addEventListener("mouseup", (e) => {
+            // Check if the left mouse button is released (button code: 0)
+            if (e.button === 0) {
+                isMouseDown = false;
+            }
+        });
+        
+        
+        
+        
     }
 }
 
@@ -70,12 +107,23 @@ gridChangeBtn.addEventListener("click", () => {
     
 })
 
-clear.addEventListener("click", () => {
+clear.addEventListener("click", (e) => {
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
         cell.style.backgroundColor = "white";
     });
+    
 });
+
+document.addEventListener("mousedown", (e) => {
+    if(e.button === 0) isMouseDown = true;
+})
+
+document.addEventListener("mouseup", (e) => {
+    if(e.button === 0) isMouseDown = false;
+})
+
+container.addEventListener
 
 
 
